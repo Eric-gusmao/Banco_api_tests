@@ -5,9 +5,9 @@
     "passes": 3,
     "pending": 0,
     "failures": 0,
-    "start": "2026-08-27T18:02:18.746Z",
-    "end": "2026-08-27T18:02:18.812Z",
-    "duration": 66,
+    "start": "2026-08-27T18:30:17.372Z",
+    "end": "2026-08-27T18:30:17.459Z",
+    "duration": 87,
     "testsRegistered": 3,
     "passPercent": 100,
     "pendingPercent": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "cf0a0fdb-e8b5-4761-be93-9ce48c072d22",
+      "uuid": "99ad519d-2c10-4655-9f28-2762d50cb366",
       "title": "",
       "fullFile": "",
       "file": "",
@@ -27,7 +27,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "2fa0c972-fd5f-4957-90da-22318f46749f",
+          "uuid": "8178bc6d-219f-434f-9b5b-56e89ace57bc",
           "title": "Login",
           "fullFile": "C:\\Projetos\\Banco_api_test\\test\\login.test.js",
           "file": "\\test\\login.test.js",
@@ -36,7 +36,7 @@
           "tests": [],
           "suites": [
             {
-              "uuid": "608cf05b-cb15-415f-8faf-a89dd80e44f3",
+              "uuid": "1b450469-744a-4617-be68-0bc9730c9de0",
               "title": "POST /login",
               "fullFile": "C:\\Projetos\\Banco_api_test\\test\\login.test.js",
               "file": "\\test\\login.test.js",
@@ -47,7 +47,7 @@
                   "title": "Deve retornar 200 e um token de autenticação para credenciais válidas",
                   "fullTitle": "Login POST /login Deve retornar 200 e um token de autenticação para credenciais válidas",
                   "timedOut": false,
-                  "duration": 29,
+                  "duration": 36,
                   "state": "passed",
                   "speed": "fast",
                   "pass": true,
@@ -56,20 +56,20 @@
                   "context": null,
                   "code": "const resposta = await request(process.env.BASE_URL)   \n    .post('/login')\n    .set('Content-Type', 'application/json')\n    .send({\n        username: 'julio.lima',\n        senha: '123456'\n    });\nexpect(resposta.status).to.equal(200);\nexpect(resposta.body.token).to.be.a('string');",
                   "err": {},
-                  "uuid": "6a11371c-f563-41db-8cb4-7da40b00b21b",
-                  "parentUUID": "608cf05b-cb15-415f-8faf-a89dd80e44f3",
+                  "uuid": "333ceea4-d99e-4518-9b4a-cf6f8fad01ce",
+                  "parentUUID": "1b450469-744a-4617-be68-0bc9730c9de0",
                   "isHook": false,
                   "skipped": false
                 }
               ],
               "suites": [],
               "passes": [
-                "6a11371c-f563-41db-8cb4-7da40b00b21b"
+                "333ceea4-d99e-4518-9b4a-cf6f8fad01ce"
               ],
               "failures": [],
               "pending": [],
               "skipped": [],
-              "duration": 29,
+              "duration": 36,
               "root": false,
               "rootEmpty": false,
               "_timeout": 200000
@@ -85,7 +85,7 @@
           "_timeout": 200000
         },
         {
-          "uuid": "f25a8aaa-f0e5-4b39-a9ea-c676127e6528",
+          "uuid": "b86f579c-23b8-46dd-9eca-201dff864aa8",
           "title": "Transferência",
           "fullFile": "C:\\Projetos\\Banco_api_test\\test\\transferencia.test.js",
           "file": "\\test\\transferencia.test.js",
@@ -94,28 +94,47 @@
           "tests": [],
           "suites": [
             {
-              "uuid": "9305658e-75f3-406f-9851-90d7d6c9fd1b",
+              "uuid": "e7b80567-6b04-4872-819f-88658fb57cfa",
               "title": "POST /transferencias",
               "fullFile": "C:\\Projetos\\Banco_api_test\\test\\transferencia.test.js",
               "file": "\\test\\transferencia.test.js",
-              "beforeHooks": [],
+              "beforeHooks": [
+                {
+                  "title": "\"before each\" hook in \"POST /transferencias\"",
+                  "fullTitle": "Transferência POST /transferencias \"before each\" hook in \"POST /transferencias\"",
+                  "timedOut": false,
+                  "duration": 4,
+                  "state": null,
+                  "speed": null,
+                  "pass": false,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "token = await obterToken('julio.lima', '123456');",
+                  "err": {},
+                  "uuid": "39c5003a-5987-4e61-add9-bea2a3d15600",
+                  "parentUUID": "e7b80567-6b04-4872-819f-88658fb57cfa",
+                  "isHook": true,
+                  "skipped": false
+                }
+              ],
               "afterHooks": [],
               "tests": [
                 {
                   "title": "Deve retornar sucesso com 201 com trasferecia maior ou igual a R$ 10,00",
                   "fullTitle": "Transferência POST /transferencias Deve retornar sucesso com 201 com trasferecia maior ou igual a R$ 10,00",
                   "timedOut": false,
-                  "duration": 25,
+                  "duration": 21,
                   "state": "passed",
                   "speed": "fast",
                   "pass": true,
                   "fail": false,
                   "pending": false,
                   "context": null,
-                  "code": "// Capturar token\nconst respostaLogin = await request(process.env.BASE_URL)\n    .post('/login')\n    .set('Content-Type', 'application/json')\n    .send({\n        username: 'julio.lima',\n        senha: '123456'\n    });\nconst token = respostaLogin.body.token;\n\nconst resposta = await request(process.env.BASE_URL)\n    .post('/transferencias')\n    .set('Content-Type', 'application/json')\n    .set('Authorization', `Bearer ${token}`)\n    .send({\n        contaOrigem: 1,\n        contaDestino: 2,\n        valor: 11,\n        token: \"string\"\n    });\n    expect(resposta.status).to.equal(201);",
+                  "code": "const resposta = await request(process.env.BASE_URL)\n    .post('/transferencias')\n    .set('Content-Type', 'application/json')\n    .set('Authorization', `Bearer ${token}`)\n    .send({\n        contaOrigem: 1,\n        contaDestino: 2,\n        valor: 11,\n        token: \"string\"\n    });\n    expect(resposta.status).to.equal(201);",
                   "err": {},
-                  "uuid": "bf39bc97-4915-496c-a009-747561290ad1",
-                  "parentUUID": "9305658e-75f3-406f-9851-90d7d6c9fd1b",
+                  "uuid": "8a642185-afde-40c8-8c00-2059f9bd5b35",
+                  "parentUUID": "e7b80567-6b04-4872-819f-88658fb57cfa",
                   "isHook": false,
                   "skipped": false
                 },
@@ -123,30 +142,30 @@
                   "title": "Deve retornar erro com 422 quando valor de transferencia menor que R$ 10.00",
                   "fullTitle": "Transferência POST /transferencias Deve retornar erro com 422 quando valor de transferencia menor que R$ 10.00",
                   "timedOut": false,
-                  "duration": 5,
+                  "duration": 6,
                   "state": "passed",
                   "speed": "fast",
                   "pass": true,
                   "fail": false,
                   "pending": false,
                   "context": null,
-                  "code": "const respostaLogin = await request(process.env.BASE_URL)\n    .post('/login')\n    .set('Content-Type', 'application/json')\n    .send({\n        username: 'julio.lima',\n        senha: '123456'\n    });\nconst token = respostaLogin.body.token;\n\nconst resposta = await request('http://localhost:3000')\n    .post('/transferencias')\n    .set('Content-Type', 'application/json')\n    .set('Authorization', `Bearer ${token}`)\n    .send({\n        contaOrigem: 1,\n        contaDestino: 2,\n        valor: 9,\n        token: \"string\"\n    });\n    expect(resposta.status).to.equal(422);",
+                  "code": "const resposta = await request(process.env.BASE_URL)\n    .post('/transferencias')\n    .set('Content-Type', 'application/json')\n    .set('Authorization', `Bearer ${token}`)\n    .send({\n        contaOrigem: 1,\n        contaDestino: 2,\n        valor: 9,\n        token: \"string\"\n    });\n    expect(resposta.status).to.equal(422);",
                   "err": {},
-                  "uuid": "e06372bf-22a5-4aae-9ac5-fb6d38b9a555",
-                  "parentUUID": "9305658e-75f3-406f-9851-90d7d6c9fd1b",
+                  "uuid": "f3010bc6-47f2-4c2b-bc01-1c58c8c53d39",
+                  "parentUUID": "e7b80567-6b04-4872-819f-88658fb57cfa",
                   "isHook": false,
                   "skipped": false
                 }
               ],
               "suites": [],
               "passes": [
-                "bf39bc97-4915-496c-a009-747561290ad1",
-                "e06372bf-22a5-4aae-9ac5-fb6d38b9a555"
+                "8a642185-afde-40c8-8c00-2059f9bd5b35",
+                "f3010bc6-47f2-4c2b-bc01-1c58c8c53d39"
               ],
               "failures": [],
               "pending": [],
               "skipped": [],
-              "duration": 30,
+              "duration": 27,
               "root": false,
               "rootEmpty": false,
               "_timeout": 200000
