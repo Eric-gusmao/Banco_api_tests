@@ -65,34 +65,25 @@ describe('Transferência', () => {
 
     describe('DELETE /transferencias/{id}', () => {
         it('Deve deletar uma transferencia válida com sucesso e confirmar que foi removida', async () => {
-            const respostaListagemInicial = await request(process.env.BASE_URL)
-                .get('/transferencias?page=1&limite=100')
-                .set('Authorization', `Bearer ${token}`);
+            const valorUnico = Number((10 + Math.random() * 100).toFixed(2));
+            const transferenciaTeste = { ...postTransferencias, valor: valorUnico };
 
-            expect(respostaListagemInicial.status).to.equal(200);
-            expect(respostaListagemInicial.body.transferencias).to.be.an('array');
-
-            const idsIniciais = new Set(
-                respostaListagemInicial.body.transferencias.map(transferencia => transferencia.id)
-            );
-
-            const respostaPost = await request(process.env.BASE_URL)
+            const respostaCriacao = await request(process.env.BASE_URL)
                 .post('/transferencias')
-                .set('Content-Type', 'application/json')
                 .set('Authorization', `Bearer ${token}`)
-                .send({ ...postTransferencias });
+                .send(transferenciaTeste);
 
-            expect(respostaPost.status).to.equal(201);
+            expect(respostaCriacao.status).to.equal(201);
 
-            const respostaReconsulta = await request(process.env.BASE_URL)
+            const respostaListagem = await request(process.env.BASE_URL)
                 .get('/transferencias?page=1&limite=100')
                 .set('Authorization', `Bearer ${token}`);
 
-            expect(respostaReconsulta.status).to.equal(200);
-            expect(respostaReconsulta.body.transferencias).to.be.an('array');
+            expect(respostaListagem.status).to.equal(200);
+            expect(respostaListagem.body.transferencias).to.be.an('array');
 
-            const transferenciaCriada = respostaReconsulta.body.transferencias.find(
-                transferencia => !idsIniciais.has(transferencia.id)
+            const transferenciaCriada = respostaListagem.body.transferencias.find(
+                transferencia => Number(transferencia.valor) === valorUnico
             );
 
             expect(transferenciaCriada).to.exist;
