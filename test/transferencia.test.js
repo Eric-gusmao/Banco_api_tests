@@ -64,34 +64,51 @@ describe('Transferência', () => {
     });
 
     describe('DELETE /transferencias/{id}', () => {
-       it('Deve deletar uma transferencia válida com sucesso e confirmar que foi removida', async () => {
-            const bodyTrasferencias = { ...postTransferencias };
+        it('Deve deletar uma transferencia válida com sucesso e confirmar que foi removida', async () => {
+            const respostaListagemInicial = await request(process.env.BASE_URL)
+                .get('/transferencias?page=1&limite=100')
+                .set('Authorization', `Bearer ${token}`);
+
+            expect(respostaListagemInicial.status).to.equal(200);
+            expect(respostaListagemInicial.body.transferencias).to.be.an('array');
+
+            const idsIniciais = new Set(
+                respostaListagemInicial.body.transferencias.map(transferencia => transferencia.id)
+            );
+
             const respostaPost = await request(process.env.BASE_URL)
                 .post('/transferencias')
                 .set('Content-Type', 'application/json')
                 .set('Authorization', `Bearer ${token}`)
-                .send(bodyTrasferencias);
+                .send({ ...postTransferencias });
 
-            const respostaListagem = await request(process.env.BASE_URL)
-                .get('/transferencias?page=1&limite=1')
+            expect(respostaPost.status).to.equal(201);
+
+            const respostaReconsulta = await request(process.env.BASE_URL)
+                .get('/transferencias?page=1&limite=100')
                 .set('Authorization', `Bearer ${token}`);
 
-            const respostaPostTransferenciaId = respostaListagem.body.transferencias[0].id;
+            expect(respostaReconsulta.status).to.equal(200);
+            expect(respostaReconsulta.body.transferencias).to.be.an('array');
+
+            const transferenciaCriada = respostaReconsulta.body.transferencias.find(
+                transferencia => !idsIniciais.has(transferencia.id)
+            );
+
+            expect(transferenciaCriada).to.exist;
+            expect(transferenciaCriada.id).to.be.a('number');
 
             const respostaDelete = await request(process.env.BASE_URL)
-                .delete(`/transferencias/${respostaPostTransferenciaId}`)
-                .set('Content-Type', 'application/json')
+                .delete(`/transferencias/${transferenciaCriada.id}`)
                 .set('Authorization', `Bearer ${token}`);
 
             expect(respostaDelete.status).to.equal(204);
-            
+
             const respostaGet = await request(process.env.BASE_URL)
-                .get(`/transferencias/${respostaPostTransferenciaId}`)
-                .set('Content-Type', 'application/json')
+                .get(`/transferencias/${transferenciaCriada.id}`)
                 .set('Authorization', `Bearer ${token}`);
 
-            expect(respostaGet.status).to.equal(200);
-            expect(respostaGet.body).to.equal('');
-       });
+            expect(respostaGet.status).to.equal(404);
+        });
     });
 });
